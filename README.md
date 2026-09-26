@@ -212,7 +212,8 @@ AGENTOS_MCP_SERVERS='[{
 
 A server is **not trusted by default**. A tool it exposes without a
 `destructiveHint` annotation is treated as destructive, which routes it through
-human approval.
+human approval. This path is tested against a real MCP server over stdio, not a
+stub — see [`tests/integration/mcp.test.ts`](./tests/integration/mcp.test.ts).
 
 **As a server** — `@agentos/mcp-server` exposes read-only management tools
 (`list_agents`, `get_execution_trace`, `get_agent_metrics`, `get_cost_breakdown`,
