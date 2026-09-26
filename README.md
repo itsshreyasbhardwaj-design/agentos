@@ -331,6 +331,7 @@ See [CHANGELOG.md](./CHANGELOG.md) and the [roadmap](./docs/ROADMAP.md).
 | [REST API](./docs/API.md) | Every endpoint, with error codes |
 | [Deployment](./docs/DEPLOYMENT.md) | Production topology and configuration |
 | [Benchmarks](./docs/BENCHMARKS.md) | Measured numbers and methodology |
+| [Accessibility](./docs/ACCESSIBILITY.md) | Audit result for the dashboard, and its gaps |
 | [Roadmap](./docs/ROADMAP.md) | What is missing and what comes next |
 
 ## Contributing

@@ -10,4 +10,5 @@
 | [API.md](./API.md) | You are calling the REST API directly |
 | [DEPLOYMENT.md](./DEPLOYMENT.md) | You are putting this in production |
 | [BENCHMARKS.md](./BENCHMARKS.md) | You want the measured numbers and how they were taken |
+| [ACCESSIBILITY.md](./ACCESSIBILITY.md) | You want the audit result for the dashboard, and what it does not cover |
 | [ROADMAP.md](./ROADMAP.md) | You want to know what is missing and what comes next |

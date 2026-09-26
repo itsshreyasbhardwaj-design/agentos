@@ -65,6 +65,14 @@ export function CommandPalette({ commands }: { commands: Command[] }) {
     setActive(0);
   }, [query]);
 
+  // Keep the selected option visible. Without this, arrowing past the visible
+  // rows moves the selection somewhere the user cannot see.
+  useEffect(() => {
+    if (!open) return;
+    const option = listRef.current?.querySelector<HTMLElement>('[aria-selected="true"]');
+    option?.scrollIntoView({ block: 'nearest' });
+  }, [active, open, results.length]);
+
   if (!open) return null;
 
   const go = (href: string) => {
@@ -121,26 +129,42 @@ export function CommandPalette({ commands }: { commands: Command[] }) {
           <Kbd>esc</Kbd>
         </div>
 
-        <ul id="command-results" ref={listRef} role="listbox" aria-label="Commands" className="max-h-80 overflow-y-auto p-1.5">
+        {/*
+          `tabIndex={-1}` makes the scroll container programmatically focusable
+          without adding a tab stop: focus stays on the input, which drives the
+          list through aria-activedescendant and scrolls it via the effect above.
+        */}
+        <ul
+          id="command-results"
+          ref={listRef}
+          role="listbox"
+          aria-label="Commands"
+          tabIndex={-1}
+          className="max-h-80 overflow-y-auto p-1.5"
+        >
           {results.length === 0 ? (
             <li className="px-3 py-6 text-center text-sm" style={{ color: 'var(--text-muted)' }}>
               Nothing matches “{query}”.
             </li>
           ) : (
             results.map((command, index) => (
-              <li key={command.id} id={`command-${command.id}`} role="option" aria-selected={index === active}>
-                <button
-                  type="button"
-                  onMouseEnter={() => setActive(index)}
-                  onClick={() => go(command.href)}
-                  className="flex w-full items-center justify-between gap-3 rounded-md px-3 py-2 text-left text-sm"
-                  style={{ background: index === active ? 'var(--bg-hover)' : 'transparent' }}
-                >
-                  <span className="truncate">{command.label}</span>
-                  <span className="shrink-0 text-xs" style={{ color: 'var(--text-faint)' }}>
-                    {command.group}
-                  </span>
-                </button>
+              // The option itself is the target. A `role="option"` must not
+              // contain a focusable control — focus stays on the input, and
+              // selection is conveyed by aria-activedescendant.
+              <li
+                key={command.id}
+                id={`command-${command.id}`}
+                role="option"
+                aria-selected={index === active}
+                onMouseEnter={() => setActive(index)}
+                onClick={() => go(command.href)}
+                className="flex cursor-pointer items-center justify-between gap-3 rounded-md px-3 py-2 text-sm"
+                style={{ background: index === active ? 'var(--bg-hover)' : 'transparent' }}
+              >
+                <span className="truncate">{command.label}</span>
+                <span className="shrink-0 text-xs" style={{ color: 'var(--text-faint)' }}>
+                  {command.group}
+                </span>
               </li>
             ))
           )}

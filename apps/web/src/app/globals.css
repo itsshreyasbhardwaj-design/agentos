@@ -20,7 +20,9 @@
   --border-strong: #cdd1d8;
   --text: #16181d;
   --text-muted: #5f6672;
-  --text-faint: #8b929e;
+  /* Measured with axe-core: 4.56:1 on the darkest light surface. The previous
+     value (#8b929e) was 2.7-3.1:1 and failed WCAG AA for small text. */
+  --text-faint: #656c77;
   --accent: #3b5bdb;
   --accent-fg: #ffffff;
   --ok: #0f7b4f;
@@ -43,7 +45,8 @@
   --border-strong: #343941;
   --text: #e8eaed;
   --text-muted: #9aa1ad;
-  --text-faint: #6b727e;
+  /* 4.99:1 on --bg-hover, the worst dark surface. Was 3.41-4.04:1. */
+  --text-faint: #868e99;
   --accent: #748ffc;
   --accent-fg: #0b0c0e;
   --ok: #4ade80;
