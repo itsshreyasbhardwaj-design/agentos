@@ -10,7 +10,7 @@ pnpm build
 pnpm test
 ```
 
-Node 20.11+ and pnpm 11+. Nothing else: the test suite runs offline with no
+Node 22.13+ and pnpm 11+. Nothing else: the test suite runs offline with no
 database, no Redis and no API key.
 
 ## Before you open a pull request

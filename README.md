@@ -57,7 +57,7 @@ not a claim.
 
 ## Quickstart
 
-Requires Node 20.11+ and pnpm. No database, no Redis, no API key.
+Requires Node 22.13+ and pnpm 11+. No database, no Redis, no API key.
 
 ```bash
 git clone https://github.com/itsshreyasbhardwaj-design/agentos.git
