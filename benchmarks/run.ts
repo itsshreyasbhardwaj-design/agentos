@@ -21,7 +21,7 @@ import { InMemoryEventBus, EventEmitter } from '@agentos/events';
 import { buildTrace } from '@agentos/events';
 import { PolicyEngine, baselinePolicy, type PolicyRequest } from '@agentos/policy';
 import { DEFAULT_LIMITS, emptyUsage } from '@agentos/core';
-import { createBenchStack, ORG, PRINCIPAL, percentile, summarise, type Sample } from './harness.js';
+import { createBenchStack, ORG, PRINCIPAL, summarise, type Sample } from './harness.js';
 
 const results: Sample[] = [];
 const record = (samples: Sample[]) => {

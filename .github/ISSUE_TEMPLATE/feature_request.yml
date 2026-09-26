@@ -1,0 +1,33 @@
+name: Feature request
+description: Propose a capability AgentOS does not have.
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: The problem
+      description: >
+        What are you trying to do that you cannot do today? Describe the
+        situation, not the solution.
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: What you have in mind
+      description: If you have a shape in mind, sketch it. An API sketch helps.
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: What you have tried
+      description: Workarounds, and why they are not enough.
+
+  - type: checkboxes
+    id: scope
+    attributes:
+      label: Fit
+      options:
+        - label: I have read the [roadmap](../../docs/ROADMAP.md), including "Not planned"
+          required: true

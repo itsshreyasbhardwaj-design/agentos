@@ -1,4 +1,4 @@
-import { AgentOSError, isJsonObject, type JsonObject, type JsonValue, type Message, type ToolCall } from '@agentos/core';
+import { AgentOSError, isJsonObject, type JsonObject, type JsonValue, type ToolCall } from '@agentos/core';
 import { LOCAL_MODELS, unknownModel } from './catalog.js';
 import { httpJson } from './http.js';
 import {

@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Report a vulnerability privately
+    url: https://github.com/itsshreyasbhardwaj-design/agentos/security/advisories/new
+    about: Security issues go here, never to a public issue.
+  - name: Questions and ideas
+    url: https://github.com/itsshreyasbhardwaj-design/agentos/discussions
+    about: For usage questions and open-ended discussion.

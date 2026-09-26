@@ -1,0 +1,23 @@
+name: Security report
+description: Do not use this form.
+labels: [security]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Please do not report vulnerabilities in a public issue
+
+        Use GitHub's
+        [private vulnerability reporting](https://github.com/itsshreyasbhardwaj-design/agentos/security/advisories/new)
+        instead. It reaches the same people, without telling everyone else first.
+
+        [SECURITY.md](../../SECURITY.md) covers what is in scope, the threat
+        model, and the known limitations of the current release.
+
+  - type: checkboxes
+    id: acknowledge
+    attributes:
+      label: Acknowledgement
+      options:
+        - label: I understand this form is not for vulnerability reports, and I will use private reporting.
+          required: true

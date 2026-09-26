@@ -136,7 +136,7 @@ describe('baseline policies', () => {
   });
 
   it('is disabled when the policy is disabled', () => {
-    const disabled = [{ ...policies[0]!, enabled: false }];
+    const disabled = policies.map((p) => ({ ...p, enabled: false }));
     const decision = engine.evaluateWithPermissions(
       req({ tool: { name: 'github.merge_pr', operations: ['write'], destructive: true, domains: [], arguments: {} } }),
       { ...perms, allowedTools: ['github.*'], allowedOperations: ['read', 'write', 'network'] },

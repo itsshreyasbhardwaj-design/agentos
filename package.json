@@ -25,7 +25,8 @@
     "dev:worker": "pnpm --filter @agentos/worker dev",
     "dev:web": "pnpm --filter @agentos/web dev",
     "e2e": "playwright test",
-    "seed": "pnpm --filter @agentos/api seed"
+    "seed": "pnpm --filter @agentos/api seed",
+    "e2e:ui": "playwright test --ui"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.0",
@@ -48,6 +49,7 @@
     "@agentos/queue": "workspace:*",
     "@agentos/runtime": "workspace:*",
     "@agentos/sdk": "workspace:*",
-    "@agentos/mcp-server": "workspace:*"
+    "@agentos/mcp-server": "workspace:*",
+    "@playwright/test": "^1.56.0"
   }
 }
