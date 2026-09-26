@@ -1,0 +1,19 @@
+{
+  "name": "@agentos/worker",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "dev": "tsx watch src/main.ts",
+    "start": "node dist/main.js"
+  },
+  "dependencies": {
+    "@agentos/api": "workspace:*",
+    "@agentos/core": "workspace:*",
+    "@agentos/queue": "workspace:*",
+    "@agentos/runtime": "workspace:*",
+    "@agentos/store": "workspace:*"
+  }
+}

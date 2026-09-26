@@ -1,0 +1,13 @@
+{
+  "name": "@agentos/runtime",
+  "version": "0.1.0",
+  "description": "AgentOS agent runtime",
+  "license": "Apache-2.0",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": { ".": { "types": "./dist/index.d.ts", "default": "./dist/index.js" } },
+  "files": ["dist"],
+  "scripts": { "build": "tsc -p tsconfig.json", "clean": "rm -rf dist" },
+  "dependencies": { "@agentos/core": "workspace:*", "@agentos/events": "workspace:*", "@agentos/policy": "workspace:*", "@agentos/providers": "workspace:*", "@agentos/tools": "workspace:*", "@agentos/memory": "workspace:*", "@agentos/store": "workspace:*", "@agentos/queue": "workspace:*" }
+}
