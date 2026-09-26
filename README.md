@@ -6,6 +6,9 @@
 
 The model proposes. The runtime decides.
 
+[![CI](https://github.com/itsshreyasbhardwaj-design/agentos/actions/workflows/ci.yml/badge.svg)](https://github.com/itsshreyasbhardwaj-design/agentos/actions/workflows/ci.yml)
+[![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](./LICENSE)
+
 [Quickstart](#quickstart) · [Architecture](./docs/ARCHITECTURE.md) · [Runtime](./docs/RUNTIME.md) · [Security model](./docs/SECURITY_MODEL.md) · [API](./docs/API.md) · [All docs](./docs)
 
 </div>
@@ -305,12 +308,12 @@ backends.
   both SDKs, the in-memory and PostgreSQL stores, the in-memory queue, and the
   dashboard — the last through a Playwright suite that drives a real browser
   against a real API, including approving a paused execution through to
-  completion.
-- **Written but not executed here:** the **Redis queue** (no Redis was available
-  on the build machine; its integration test skips without `REDIS_URL`), and the
-  **hosted model adapters** — OpenAI, Anthropic, Gemini, OpenRouter — which have
-  never been pointed at a live paid endpoint. Their translation layers are
-  reviewed but unproven against the real APIs.
+  completion. The **Redis queue** is covered by a CI job running against a real
+  Redis service.
+- **Written but never run against the real thing:** the **hosted model
+  adapters** — OpenAI, Anthropic, Gemini, OpenRouter. Their translation layers
+  are reviewed and unit-tested, but have never been pointed at a live paid
+  endpoint. Treat them as unproven.
 - **Not built:** billing, a hosted offering, SSO/SCIM.
 
 See [CHANGELOG.md](./CHANGELOG.md) and the [roadmap](./docs/ROADMAP.md).

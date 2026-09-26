@@ -65,9 +65,6 @@ boundaries are:
 
 Stated plainly rather than discovered later:
 
-- **The Redis queue has not been run.** It is implemented and reviewed but no
-  Redis was available when it was written; its integration test skips without
-  `REDIS_URL`. Treat it as unverified until you have exercised it.
 - **Hosted model adapters are unproven against live APIs.** OpenAI, Anthropic,
   Gemini and OpenRouter translation layers have never been pointed at a real
   paid endpoint.

@@ -6,9 +6,6 @@ Ordered by what most limits the project today.
 
 The honest gaps in v0.1.0, and the first thing to close:
 
-- **Run the Redis queue.** Written and reviewed, never executed — no Redis was
-  available on the build machine. Needs a CI service container and the
-  integration test un-skipped.
 - **Exercise the hosted model adapters.** OpenAI, Anthropic, Gemini and
   OpenRouter translation layers have never met a live endpoint. Needs recorded
   fixtures plus an opt-in live suite.
