@@ -20,7 +20,7 @@
     "test:security": "vitest run --project security",
     "test:watch": "vitest",
     "coverage": "vitest run --coverage",
-    "bench": "node --experimental-strip-types benchmarks/run.ts",
+    "bench": "tsx benchmarks/run.ts",
     "dev:api": "pnpm --filter @agentos/api dev",
     "dev:worker": "pnpm --filter @agentos/worker dev",
     "dev:web": "pnpm --filter @agentos/web dev",
@@ -37,6 +37,17 @@
     "typescript-eslint": "^8.46.0",
     "vitest": "^5.0.2",
     "@electric-sql/pglite": "^0.5.8",
-    "@types/pg": "^8.15.6"
+    "@types/pg": "^8.15.6",
+    "@agentos/core": "workspace:*",
+    "@agentos/events": "workspace:*",
+    "@agentos/policy": "workspace:*",
+    "@agentos/providers": "workspace:*",
+    "@agentos/tools": "workspace:*",
+    "@agentos/memory": "workspace:*",
+    "@agentos/store": "workspace:*",
+    "@agentos/queue": "workspace:*",
+    "@agentos/runtime": "workspace:*",
+    "@agentos/sdk": "workspace:*",
+    "@agentos/mcp-server": "workspace:*"
   }
 }

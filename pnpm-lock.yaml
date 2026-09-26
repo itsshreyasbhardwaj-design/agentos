@@ -8,6 +8,39 @@ importers:
 
   .:
     devDependencies:
+      '@agentos/core':
+        specifier: workspace:*
+        version: link:packages/core
+      '@agentos/events':
+        specifier: workspace:*
+        version: link:packages/events
+      '@agentos/mcp-server':
+        specifier: workspace:*
+        version: link:packages/mcp-server
+      '@agentos/memory':
+        specifier: workspace:*
+        version: link:packages/memory
+      '@agentos/policy':
+        specifier: workspace:*
+        version: link:packages/policy
+      '@agentos/providers':
+        specifier: workspace:*
+        version: link:packages/providers
+      '@agentos/queue':
+        specifier: workspace:*
+        version: link:packages/queue
+      '@agentos/runtime':
+        specifier: workspace:*
+        version: link:packages/runtime
+      '@agentos/sdk':
+        specifier: workspace:*
+        version: link:packages/sdk
+      '@agentos/store':
+        specifier: workspace:*
+        version: link:packages/store
+      '@agentos/tools':
+        specifier: workspace:*
+        version: link:packages/tools
       '@electric-sql/pglite':
         specifier: ^0.5.8
         version: 0.5.8
