@@ -19,23 +19,70 @@ export function demoScript(context: ScriptContext): ScriptedTurn {
   const toolResults = messages.filter((m) => m.role === 'tool');
   const prompt = (lastUser && lastUser.role === 'user' ? lastUser.content : '').toLowerCase();
 
+  const wantsJson = messages.some(
+    (m) => m.role === 'system' && m.content.includes('Your final answer must be JSON'),
+  );
+
   // Once a tool has answered, summarise rather than looping.
   if (toolResults.length > 0) {
     const last = toolResults[toolResults.length - 1];
     const body = last && last.role === 'tool' ? last.content : '';
     const failed = last && last.role === 'tool' ? last.isError === true : false;
+
     if (failed) {
+      return wantsJson
+        ? {
+            content: JSON.stringify({ summary: `the tool failed: ${body.slice(0, 200)}`, confidence: 0, sources: [] }),
+            finishReason: 'stop',
+          }
+        : {
+            content: `I could not complete that step. The tool reported: ${body.slice(0, 300)}`,
+            finishReason: 'stop',
+          };
+    }
+
+    // If the agent can publish and was asked to, take the write action — which
+    // is what makes the approval gate visible in the demo.
+    const canPost = (context.request.tools ?? []).some((t) => t.name === 'demo.post_review');
+    const alreadyPosted = messages.some((m) => m.role === 'tool' && m.name === 'demo.post_review');
+    if (canPost && !alreadyPosted && /post|publish|comment|review/.test(prompt)) {
       return {
-        content: `I could not complete that step. The tool reported: ${body.slice(0, 300)}`,
+        toolCalls: [
+          {
+            name: 'demo.post_review',
+            arguments: {
+              target: 'pull-request',
+              body: 'Finding: the token comparison in src/auth.ts is not constant time.',
+            } as JsonObject,
+          },
+        ],
+      };
+    }
+
+    // Pull the value back out of the fenced tool output for a tidy answer.
+    const computed = /"result"\s*:\s*(-?[\d.]+)/.exec(body)?.[1] ?? null;
+    if (wantsJson) {
+      return {
+        content: JSON.stringify({
+          summary: computed === null ? body.slice(0, 300) : `The result is ${computed}.`,
+          confidence: computed === null ? 0.4 : 0.9,
+          sources: ['math.evaluate'],
+        }),
         finishReason: 'stop',
       };
     }
     return {
       content:
-        `Here is what I found.\n\n${body.slice(0, 600)}\n\n` +
-        '(Produced by the deterministic demo model — no language model was called.)',
+        computed === null
+          ? `Here is what I found.\n\n${body.slice(0, 600)}\n\n(Deterministic demo model — no language model was called.)`
+          : `The result is ${computed}. (Deterministic demo model — no language model was called.)`,
       finishReason: 'stop',
     };
+  }
+
+  const demoDocument = /\b(status-page|pull-request|metrics)\b/.exec(prompt);
+  if (demoDocument?.[1]) {
+    return { toolCalls: [{ name: 'demo.fetch_page', arguments: { document: demoDocument[1] } as JsonObject }] };
   }
 
   const arithmetic = /(-?\d+(?:\.\d+)?\s*[-+*/^]\s*-?\d+(?:\.\d+)?(?:\s*[-+*/^]\s*-?\d+(?:\.\d+)?)*)/.exec(prompt);
@@ -52,10 +99,7 @@ export function demoScript(context: ScriptContext): ScriptedTurn {
     return { toolCalls: [{ name: 'time.now', arguments: {} }] };
   }
 
-  const structured = messages.some(
-    (m) => m.role === 'system' && m.content.includes('Your final answer must be JSON'),
-  );
-  if (structured) {
+  if (wantsJson) {
     return {
       content: JSON.stringify({ summary: 'demo response', confidence: 0.5, sources: [] }),
       finishReason: 'stop',

@@ -24,6 +24,7 @@ import {
 import { EventEmitter } from '@agentos/events';
 import { MemoryManager } from '@agentos/memory';
 import type { Policy, PolicyRequest } from '@agentos/policy';
+import { parseModelId } from '@agentos/providers';
 import type { ToolDefinition } from '@agentos/tools';
 import { toolFacts, wrapUntrusted } from '@agentos/tools';
 import type { RuntimeContext } from './context.js';
@@ -248,11 +249,14 @@ export class ExecutionEngine {
 
     const budget = Math.max(0, options.limits.maxCostMicroUsd - ctx.usage.costMicroUsd);
 
+    // Split the qualified id so the span is labelled the same way the success
+    // event labels it, instead of rendering `provider:provider:model`.
+    const planned = parseModelId(ctx.version.spec.model.primary);
     await ctx.emitter.emit(
       'model.call_started',
       {
-        provider: ctx.version.spec.model.primary.split(':')[0] ?? 'unknown',
-        model: ctx.version.spec.model.primary,
+        provider: planned.provider ?? 'default',
+        model: planned.model,
         messageCount: ctx.state.messages.length,
         toolCount: modelSpecs.length,
       },
@@ -310,8 +314,8 @@ export class ExecutionEngine {
       await ctx.emitter.emit(
         'model.call_failed',
         {
-          provider: ctx.version.spec.model.primary.split(':')[0] ?? 'unknown',
-          model: ctx.version.spec.model.primary,
+          provider: parseModelId(ctx.version.spec.model.primary).provider ?? 'default',
+          model: parseModelId(ctx.version.spec.model.primary).model,
           code: agentError.code,
           message: agentError.message,
           retryable: agentError.retryable,

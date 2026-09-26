@@ -6,6 +6,14 @@ export const REDACTED = '[redacted]';
 const SENSITIVE_KEY_PATTERN =
   /(password|passwd|secret|token|api[-_]?key|apikey|authorization|auth|credential|private[-_]?key|session[-_]?id|cookie|bearer|access[-_]?key|refresh[-_]?token|client[-_]?secret|signature|ssn|card[-_]?number|cvv)/i;
 
+/**
+ * Keys that contain a sensitive-looking word but are plainly not secrets.
+ * Without this, `inputTokens` and `totalTokens` match `token` and the usage
+ * numbers the whole observability layer depends on get redacted to nothing.
+ */
+const SAFE_KEY_PATTERN =
+  /^(input|output|total|max|min|prompt|completion|cached|reasoning|remaining|used)[-_]?tokens$|^token(_?count|s_used)$|^tokenizer/i;
+
 /** Shapes that look like credentials even when the key is innocuous. */
 const VALUE_PATTERNS: Array<{ name: string; re: RegExp }> = [
   { name: 'openai_key', re: /\bsk-[A-Za-z0-9_-]{16,}\b/g },
@@ -61,7 +69,8 @@ export class Redactor {
     if (isJsonObject(input)) {
       const out: Record<string, JsonValue> = {};
       for (const [k, v] of Object.entries(input)) {
-        out[k] = SENSITIVE_KEY_PATTERN.test(k) ? REDACTED : this.value(v);
+        const sensitive = SENSITIVE_KEY_PATTERN.test(k) && !SAFE_KEY_PATTERN.test(k);
+        out[k] = sensitive ? REDACTED : this.value(v);
       }
       return out;
     }

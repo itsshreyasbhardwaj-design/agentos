@@ -6,9 +6,10 @@ import {
   type Principal,
 } from '@agentos/core';
 import { baselinePolicy } from '@agentos/policy';
-import { AgentService, Scheduler } from '@agentos/runtime';
+import { AgentService, Scheduler, type RuntimeContext } from '@agentos/runtime';
 import { bootstrap } from './bootstrap.js';
 import { generateApiKey } from './auth.js';
+import { DEMO_TOOLS } from './demo-tools.js';
 
 const DEMO_ORG = 'org_demo';
 const DEMO_USER = 'usr_demo';
@@ -33,9 +34,8 @@ export const DEMO_AGENTS: Array<{ slug: string; name: string; description: strin
         'You research topics. Fetch the sources you are given, read them, and answer with a short summary ' +
         'that cites which source each claim came from. Never assert anything the sources do not support.',
       permissions: {
-        allowedTools: ['http.get', 'time.now'],
-        allowedOperations: ['read', 'network'],
-        allowedDomains: ['example.com', '*.example.com'],
+        allowedTools: ['demo.fetch_page', 'time.now'],
+        allowedOperations: ['read'],
       },
       limits: { ...DEFAULT_LIMITS, maxSteps: 8, maxCostMicroUsd: 250_000 },
     },
@@ -50,10 +50,9 @@ export const DEMO_AGENTS: Array<{ slug: string; name: string; description: strin
         'You review code changes for correctness, security and clarity. Report concrete findings with file ' +
         'and line. Posting a review is a write action and will pause for human approval.',
       permissions: {
-        allowedTools: ['http.get', 'http.post', 'json.pick'],
-        allowedOperations: ['read', 'write', 'network'],
-        allowedDomains: ['api.example.com'],
-        requireApprovalFor: ['http.post'],
+        allowedTools: ['demo.fetch_page', 'demo.post_review', 'json.pick'],
+        allowedOperations: ['read', 'write'],
+        requireApprovalFor: ['demo.post_review'],
       },
       limits: { ...DEFAULT_LIMITS, maxSteps: 10 },
     },
@@ -87,11 +86,7 @@ export const DEMO_AGENTS: Array<{ slug: string; name: string; description: strin
       instructions:
         'You answer customer questions using what you recall about the product. If you are not sure, say so ' +
         'and offer to escalate. Never promise a refund; those need a human decision.',
-      permissions: {
-        allowedTools: ['http.get', 'time.now'],
-        allowedOperations: ['read', 'network'],
-        allowedDomains: ['api.example.com'],
-      },
+      permissions: { allowedTools: ['demo.fetch_page', 'time.now'], allowedOperations: ['read'] },
       memory: { provider: 'in-memory', scopes: ['semantic', 'episodic'], recallLimit: 5 },
       limits: { ...DEFAULT_LIMITS, maxSteps: 6 },
     },
@@ -114,7 +109,19 @@ export const DEMO_AGENTS: Array<{ slug: string; name: string; description: strin
 
 export async function seed(): Promise<{ apiKey: string; orgId: string }> {
   const { ctx, shutdown } = await bootstrap({});
+  const result = await seedInto(ctx);
+  await shutdown();
+  return result;
+}
+
+/** Seed the demo org into an already-bootstrapped runtime. */
+export async function seedInto(ctx: RuntimeContext): Promise<{ apiKey: string; orgId: string }> {
   const now = ctx.clock.now();
+
+  // Demo tools are local and synthetic; they exist only in a seeded deployment.
+  for (const tool of DEMO_TOOLS) {
+    if (!ctx.registry.has(tool.name)) ctx.registry.register(tool);
+  }
 
   const existing = await ctx.store.orgs.get(DEMO_ORG);
   if (!existing) {
@@ -149,7 +156,7 @@ export async function seed(): Promise<{ apiKey: string; orgId: string }> {
       name: 'morning-research',
       kind: 'cron',
       expression: '0 8 * * *',
-      input: { topic: 'overnight incidents', sources: ['https://example.com/status'] },
+      input: { topic: 'overnight incidents', document: 'status-page' },
     });
   }
 
@@ -167,7 +174,6 @@ export async function seed(): Promise<{ apiKey: string; orgId: string }> {
     revokedAt: null,
   });
 
-  await shutdown();
   return { apiKey: key.plaintext, orgId: record.orgId };
 }
 

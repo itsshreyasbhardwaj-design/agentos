@@ -22,6 +22,28 @@ describe('Redactor', () => {
     expect(r.containsLiteral('s3cret-value-123')).toBe(true);
   });
 
+  it('does not redact token counts', () => {
+    const out = new Redactor().value({
+      inputTokens: 120,
+      outputTokens: 45,
+      totalTokens: 165,
+      maxTokens: 8000,
+      tokenCount: 3,
+      // These are still credentials and must go.
+      token: 'abc123',
+      refreshToken: 'xyz789',
+    });
+    expect(out).toEqual({
+      inputTokens: 120,
+      outputTokens: 45,
+      totalTokens: 165,
+      maxTokens: 8000,
+      tokenCount: 3,
+      token: REDACTED,
+      refreshToken: REDACTED,
+    });
+  });
+
   it('truncates very long strings', () => {
     const r = new Redactor({ maxStringLength: 10 });
     expect(r.string('x'.repeat(50))).toMatch(/truncated 40 chars/);

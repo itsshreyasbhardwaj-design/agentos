@@ -35,6 +35,15 @@ async function main(): Promise<void> {
     logger.info('embedded worker, scheduler and recovery started');
   }
 
+  // With the in-process store there is nothing to seed into ahead of time, so
+  // the demo data is created at boot when asked for.
+  if (process.env['AGENTOS_SEED_DEMO'] === 'true') {
+    const { seedInto } = await import('./seed.js');
+    const { apiKey } = await seedInto(ctx);
+    logger.info('demo data seeded', { apiKey });
+    process.stdout.write(`\nDEMO_API_KEY=${apiKey}\n\n`);
+  }
+
   const app = createApp({ ctx, bus });
   const server = serve({ fetch: app.fetch, port }, (info) => {
     logger.info('api listening', { port: info.port, url: `http://127.0.0.1:${info.port}` });
