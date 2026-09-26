@@ -15,3 +15,7 @@ __pycache__/
 bench-results/
 playwright-report/
 test-results/
+
+# Next.js writes these for AI agents; the repo has its own docs.
+apps/web/AGENTS.md
+apps/web/CLAUDE.md
