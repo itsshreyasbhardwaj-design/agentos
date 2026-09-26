@@ -19,6 +19,9 @@
     "@agentos/queue": "workspace:*",
     "@agentos/runtime": "workspace:*",
     "@agentos/store": "workspace:*",
-    "@agentos/tools": "workspace:*"
+    "@agentos/tools": "workspace:*",
+    "hono": "^4.13.9",
+    "@hono/node-server": "^2.1.1",
+    "@agentos/sdk": "workspace:*"
   }
 }
