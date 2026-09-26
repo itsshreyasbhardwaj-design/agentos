@@ -66,7 +66,7 @@ Requires Node 22.13+ and pnpm 11+. No database, no Redis, no API key.
 git clone https://github.com/itsshreyasbhardwaj-design/agentos.git
 cd agentos
 pnpm install
-pnpm build
+pnpm build:all        # every package, both Node apps and the dashboard
 
 # Starts the API, a worker, the scheduler and recovery in one process,
 # and seeds five demo agents. Prints an API key.
@@ -287,10 +287,12 @@ Full detail: [docs/SECURITY_MODEL.md](./docs/SECURITY_MODEL.md).
 ## Testing
 
 ```bash
-pnpm test              # everything
+pnpm verify            # typecheck, lint, every test, full build
+pnpm test              # every vitest suite
 pnpm test:unit
-pnpm test:integration  # the HTTP surface
+pnpm test:integration  # the HTTP surface, and MCP against a real server
 pnpm test:security     # tenancy, RBAC, injection, exfiltration, webhook forgery
+pnpm e2e               # the dashboard in a real browser
 pnpm bench
 ```
 
@@ -336,8 +338,8 @@ See [CHANGELOG.md](./CHANGELOG.md) and the [roadmap](./docs/ROADMAP.md).
 
 ## Contributing
 
-[CONTRIBUTING.md](./CONTRIBUTING.md). Conventional Commits; `pnpm test` and
-`pnpm build` must pass.
+[CONTRIBUTING.md](./CONTRIBUTING.md). Conventional Commits, and `pnpm verify`
+(typecheck, lint, tests, full build) must pass.
 
 ## License
 

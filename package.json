@@ -2,7 +2,7 @@
   "name": "agentos",
   "version": "0.1.0",
   "private": true,
-  "description": "AgentOS — a production-grade runtime and control plane for AI agents",
+  "description": "AgentOS \u2014 a production-grade runtime and control plane for AI agents",
   "license": "Apache-2.0",
   "type": "module",
   "packageManager": "pnpm@11.17.0",
@@ -11,7 +11,10 @@
   },
   "scripts": {
     "build": "pnpm -r --filter './packages/*' build && pnpm --filter @agentos/api --filter @agentos/worker build",
+    "build:web": "pnpm --filter @agentos/web build",
     "build:all": "pnpm build && pnpm build:web",
+    "clean": "rm -rf packages/*/dist apps/api/dist apps/worker/dist apps/web/.next coverage playwright-report test-results && find . -name '*.tsbuildinfo' -not -path '*/node_modules/*' -delete",
+    "verify": "pnpm typecheck && pnpm lint && pnpm test && pnpm build:all",
     "typecheck": "pnpm -r exec tsc --noEmit -p tsconfig.json",
     "lint": "eslint .",
     "test": "vitest run",
@@ -20,14 +23,13 @@
     "test:security": "vitest run --project security",
     "test:watch": "vitest",
     "coverage": "vitest run --coverage",
+    "e2e": "playwright test",
+    "e2e:ui": "playwright test --ui",
     "bench": "tsx benchmarks/run.ts",
     "dev:api": "pnpm --filter @agentos/api dev",
     "dev:worker": "pnpm --filter @agentos/worker dev",
     "dev:web": "pnpm --filter @agentos/web dev",
-    "e2e": "playwright test",
-    "seed": "pnpm --filter @agentos/api seed",
-    "e2e:ui": "playwright test --ui",
-    "build:web": "pnpm --filter @agentos/web build"
+    "seed": "pnpm --filter @agentos/api seed"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.0",

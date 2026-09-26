@@ -27,14 +27,12 @@ jobs:
           node-version: 22
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - run: pnpm build
+      # One command, the same one a developer runs: every package, both Node
+      # apps and the dashboard. It must not need a live control plane or any
+      # credential to succeed.
+      - run: pnpm build:all
       - run: pnpm typecheck
       - run: pnpm lint
-      - name: Build the dashboard
-        run: pnpm build:web
-        env:
-          # The build must not require a live control plane.
-          AGENTOS_API_KEY: build-time-placeholder
 
   test:
     name: tests (node ${{ matrix.node }})

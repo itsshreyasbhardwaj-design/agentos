@@ -6,7 +6,7 @@ Thanks for considering it. This document is short on purpose.
 
 ```bash
 pnpm install
-pnpm build
+pnpm build:all   # packages, apps and the dashboard
 pnpm test
 ```
 
@@ -16,13 +16,15 @@ database, no Redis and no API key.
 ## Before you open a pull request
 
 ```bash
-pnpm typecheck
-pnpm lint
-pnpm test
-pnpm build
+pnpm verify
 ```
 
-All four must pass. CI runs the same commands.
+That runs typecheck, lint, every vitest suite and a full build of every package,
+both Node apps and the dashboard. All of it must pass; CI runs the same
+commands, plus the browser suite (`pnpm e2e`), the Python SDK, and the Redis
+queue against a real Redis.
+
+`pnpm clean` removes every build artifact if you need to rule out a stale one.
 
 ## What a good change looks like
 
