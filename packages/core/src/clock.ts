@@ -86,4 +86,8 @@ export class FastClock implements Clock {
   advance(ms: number): void {
     this.current += ms;
   }
+
+  set(ms: number): void {
+    this.current = ms;
+  }
 }

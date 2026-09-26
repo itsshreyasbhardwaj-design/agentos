@@ -117,7 +117,7 @@ export function createGuardedFetch(options: FetchGuardOptions): typeof fetch {
     return url;
   };
 
-  return async function guardedFetch(input: RequestInfo | URL, init: RequestInit = {}): Promise<Response> {
+  return async function guardedFetch(input: string | URL | Request, init: RequestInit = {}): Promise<Response> {
     let target = typeof input === 'string' ? input : input instanceof URL ? input.toString() : input.url;
     let redirects = 0;
     let method = init.method ?? 'GET';

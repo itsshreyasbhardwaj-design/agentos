@@ -234,6 +234,9 @@ importers:
       '@agentos/core':
         specifier: workspace:*
         version: link:../core
+      '@agentos/events':
+        specifier: workspace:*
+        version: link:../events
 
   packages/store:
     dependencies:
@@ -243,6 +246,9 @@ importers:
       '@agentos/events':
         specifier: workspace:*
         version: link:../events
+      '@agentos/policy':
+        specifier: workspace:*
+        version: link:../policy
       pg:
         specifier: ^8.23.0
         version: 8.23.0
@@ -255,6 +261,9 @@ importers:
       '@agentos/policy':
         specifier: workspace:*
         version: link:../policy
+      '@agentos/providers':
+        specifier: workspace:*
+        version: link:../providers
       '@modelcontextprotocol/sdk':
         specifier: ^1.30.1
         version: 1.30.1(supports-color@7.2.0)(zod@4.6.5)

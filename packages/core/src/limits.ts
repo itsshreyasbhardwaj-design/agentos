@@ -43,10 +43,10 @@ export function checkLimits(
   spec: LimitSpec,
   usage: UsageTotals,
   elapsedMs: number,
-  projected: Partial<Pick<UsageTotals, 'costMicroUsd' | 'totalTokens' | 'modelCalls' | 'toolCalls'>> = {},
+  projected: Partial<Pick<UsageTotals, 'costMicroUsd' | 'totalTokens' | 'modelCalls' | 'toolCalls' | 'steps'>> = {},
 ): LimitBreach | null {
   const checks: Array<[LimitName, number, number]> = [
-    ['maxSteps', spec.maxSteps, usage.steps],
+    ['maxSteps', spec.maxSteps, usage.steps + (projected.steps ?? 0)],
     ['maxModelCalls', spec.maxModelCalls, usage.modelCalls + (projected.modelCalls ?? 0)],
     ['maxToolCalls', spec.maxToolCalls, usage.toolCalls + (projected.toolCalls ?? 0)],
     ['maxTokens', spec.maxTokens, usage.totalTokens + (projected.totalTokens ?? 0)],

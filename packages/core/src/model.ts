@@ -231,7 +231,9 @@ export function isTerminal(status: ExecutionStatus): boolean {
  */
 export const EXECUTION_TRANSITIONS: Record<ExecutionStatus, readonly ExecutionStatus[]> = {
   queued: ['running', 'cancelled', 'failed'],
-  running: ['running', 'awaiting_approval', 'paused', 'completed', 'failed', 'cancelled'],
+  // `running -> queued` is how an execution reclaimed from a dead worker
+  // re-enters the queue; without it, lease recovery cannot requeue anything.
+  running: ['running', 'queued', 'awaiting_approval', 'paused', 'completed', 'failed', 'cancelled'],
   awaiting_approval: ['running', 'queued', 'cancelled', 'failed', 'paused'],
   paused: ['queued', 'running', 'cancelled', 'failed'],
   completed: [],

@@ -57,12 +57,14 @@ export class ScriptedProvider implements ModelProvider {
   readonly remote = false;
   private readonly cursors = new Map<string, number>();
   private readonly scripts: Record<string, ScriptedTurn[] | ScriptFn>;
+  private fallbackFn: ScriptFn | undefined;
   private readonly price: { input: number; output: number };
   private calls = 0;
 
   constructor(private readonly options: ScriptedProviderOptions = {}) {
     this.id = options.id ?? 'scripted';
     this.scripts = options.scripts ?? {};
+    this.fallbackFn = options.fallback;
     this.price = options.pricePerMTokens ?? { input: 1_000_000, output: 3_000_000 };
   }
 
@@ -72,7 +74,7 @@ export class ScriptedProvider implements ModelProvider {
 
   supports(model: string): boolean {
     if (model in this.scripts) return true;
-    if (this.options.fallback) return true;
+    if (this.fallbackFn) return true;
     return (this.options.models ?? []).some((m) => m.id === model);
   }
 
@@ -97,13 +99,18 @@ export class ScriptedProvider implements ModelProvider {
     this.calls = 0;
   }
 
+  /** Replace the fallback script. Lets a test drive several agents from one provider. */
+  setFallback(fn: ScriptFn): void {
+    this.fallbackFn = fn;
+  }
+
   async generate(request: ModelRequest, context: GenerateContext = {}): Promise<ModelResponse> {
     const started = Date.now();
     this.calls += 1;
     const turnIndex = this.cursors.get(request.model) ?? 0;
     this.cursors.set(request.model, turnIndex + 1);
 
-    const script = this.scripts[request.model] ?? this.options.fallback;
+    const script = this.scripts[request.model] ?? this.fallbackFn;
     if (!script) {
       throw new AgentOSError('provider_error', `no script registered for model ${request.model}`, {
         details: { model: request.model },
