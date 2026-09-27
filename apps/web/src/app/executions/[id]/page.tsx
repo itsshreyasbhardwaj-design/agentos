@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Badge, Card, CardHeader, ErrorState, Mono, PageHeader, Stat, StatusBadge } from '@/components/ui';
 import { api, load } from '@/lib/api';
-import { absoluteTime, duration, relativeTime, usd } from '@/lib/format';
+import { absoluteTime, duration, plural, relativeTime, usd } from '@/lib/format';
 import { ExecutionActions } from './actions';
 
 export const dynamic = 'force-dynamic';
@@ -78,12 +78,12 @@ export default async function ExecutionDetailPage({ params }: { params: Promise<
 
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-5">
         <Stat label="Duration" value={duration(elapsed)} hint={absoluteTime(execution.startedAt)} />
-        <Stat label="Steps" value={execution.usage.steps} hint={`${execution.usage.modelCalls} model calls`} />
-        <Stat label="Tool calls" value={execution.usage.toolCalls} hint={`${execution.usage.approvals} approvals`} />
+        <Stat label="Steps" value={execution.usage.steps} hint={plural(execution.usage.modelCalls, 'model call')} />
+        <Stat label="Tool calls" value={execution.usage.toolCalls} hint={plural(execution.usage.approvals, 'approval')} />
         <Stat
           label="Tokens"
           value={execution.usage.totalTokens.toLocaleString()}
-          hint={`${execution.usage.inputTokens} in / ${execution.usage.outputTokens} out`}
+          hint={`${execution.usage.inputTokens.toLocaleString()} in / ${execution.usage.outputTokens.toLocaleString()} out`}
         />
         <Stat label="Cost" value={usd(execution.usage.costMicroUsd)} hint="estimated from list prices" />
       </div>

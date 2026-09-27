@@ -15,7 +15,7 @@ import {
   Th,
 } from '@/components/ui';
 import { api, load } from '@/lib/api';
-import { absoluteTime, duration, percent, relativeTime, usd } from '@/lib/format';
+import { absoluteTime, duration, percent, plural, relativeTime, usd } from '@/lib/format';
 
 export const dynamic = 'force-dynamic';
 
@@ -78,7 +78,7 @@ export default async function AgentDetailPage({ params }: { params: Promise<{ sl
           hint={`${metrics.completed} ok · ${metrics.failed} failed`}
         />
         <Stat label="p95 duration" value={duration(metrics.p95DurationMs)} hint={`p50 ${duration(metrics.p50DurationMs)}`} />
-        <Stat label="Cost" value={usd(metrics.totalCostMicroUsd)} hint={`${metrics.modelCalls} model calls`} />
+        <Stat label="Cost" value={usd(metrics.totalCostMicroUsd)} hint={plural(metrics.modelCalls, 'model call')} />
       </div>
 
       <div className="mt-6 grid gap-4 lg:grid-cols-3">

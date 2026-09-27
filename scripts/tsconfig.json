@@ -1,0 +1,10 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "noEmit": true,
+    // These scripts drive a browser: `page.evaluate` bodies run in the page, so
+    // DOM types belong here — and deliberately nowhere else in the repo.
+    "lib": ["ES2023", "DOM"]
+  },
+  "include": ["**/*.ts"]
+}

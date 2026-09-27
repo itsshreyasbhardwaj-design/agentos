@@ -58,6 +58,14 @@ database"*. The model may well comply. The call still fails, because
 as a security event. That is [a test](./tests/security/agent-security.test.ts),
 not a claim.
 
+## Watch it refuse to act on its own
+
+An agent proposes a write action. The runtime stops the execution, persists its
+state, and shows a human exactly what was proposed and why it paused. A decision
+resumes it — from the step it stopped at.
+
+![An agent pausing for human approval, being approved, and resuming to completion](./docs/images/demo.gif)
+
 ## Quickstart
 
 Requires Node 22.13+ and pnpm 11+. No database, no Redis, no API key.
@@ -219,6 +227,51 @@ stub — see [`tests/integration/mcp.test.ts`](./tests/integration/mcp.test.ts).
 (`list_agents`, `get_execution_trace`, `get_agent_metrics`, `get_cost_breakdown`,
 …) so an assistant can explain what your fleet is doing. It deliberately cannot
 deploy, run, approve, or touch credentials.
+
+## What it looks like
+
+<table>
+<tr>
+<td width="50%">
+
+**Overview** — fleet health, derived entirely from recorded events
+
+<img src="./docs/images/overview.png" alt="AgentOS overview: execution count, success rate, estimated cost, pending approvals, recent executions and cost by agent" />
+
+</td>
+<td width="50%">
+
+**Execution trace** — every model call, tool call and approval
+
+<img src="./docs/images/trace.png" alt="An execution trace showing model, tool and approval spans with duration, tokens and cost for each" />
+
+</td>
+</tr>
+<tr>
+<td width="50%">
+
+**Approval** — what will happen, why it paused, and the exact arguments
+
+<img src="./docs/images/approvals.png" alt="An approval request showing the impact statement, the matched rule, and the arguments the model proposed, with approve and reject controls" />
+
+</td>
+<td width="50%">
+
+**Agent** — the permissions and limits the runtime will enforce
+
+<img src="./docs/images/agent-detail.png" alt="An agent's configuration: model, instructions, tools, operations, network allow-list, approval rules and limits" />
+
+</td>
+</tr>
+</table>
+
+Light theme, on the observability page:
+
+<img src="./docs/images/observability-light.png" alt="The observability page in light theme, showing tool usage and model usage" width="70%" />
+
+Every image and the recording above come from a real run against a live control
+plane — the same demo agents the quickstart seeds, on the deterministic local
+provider. Regenerate them with `pnpm capture`; nothing here is a mockup.
 
 ## Architecture
 

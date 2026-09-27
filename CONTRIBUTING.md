@@ -49,6 +49,23 @@ say so rather than approximating it.
 by recording a decision, a constraint, or a trap — not by narrating the line
 below it.
 
+## Screenshots and the demo recording
+
+The images in the README are generated, not hand-made:
+
+```bash
+pnpm build:all
+pnpm capture
+```
+
+That boots a real API with the demo agents, drives real executions through it,
+photographs the live dashboard and records the approval flow. Re-run it when the
+UI changes — and never hand-edit `docs/images/`, because an image that no longer
+matches the product is worse than none.
+
+It needs `ffmpeg` on the path (or at `~/.local/ffmpeg-bin/ffmpeg`) for the GIF;
+without it the screenshots are still produced.
+
 ## Commits
 
 [Conventional Commits](https://www.conventionalcommits.org/):

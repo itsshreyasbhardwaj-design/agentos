@@ -1,5 +1,10 @@
 {
   "extends": "./tsconfig.base.json",
-  "compilerOptions": { "noEmit": true },
-  "include": ["benchmarks/**/*.ts", "examples/**/*.ts"]
+  "compilerOptions": {
+    "noEmit": true
+  },
+  "include": [
+    "benchmarks/**/*.ts",
+    "examples/**/*.ts"
+  ]
 }

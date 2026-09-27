@@ -57,3 +57,8 @@ export function absoluteTime(timestamp: number | null | undefined): string {
 export function truncate(value: string, max = 64): string {
   return value.length <= max ? value : `${value.slice(0, max - 1)}…`;
 }
+
+/** "1 approval", "2 approvals" — small, but it shows up in screenshots. */
+export function plural(value: number, singular: string, pluralForm = `${singular}s`): string {
+  return `${value} ${value === 1 ? singular : pluralForm}`;
+}
