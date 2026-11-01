@@ -22,7 +22,7 @@
   "dependencies": {
     "@agentos/core": "workspace:*",
     "@agentos/events": "workspace:*",
-    "pg": "^8.23.0",
+    "pg": "^8.23.1",
     "@agentos/policy": "workspace:*"
   },
   "peerDependenciesMeta": {
